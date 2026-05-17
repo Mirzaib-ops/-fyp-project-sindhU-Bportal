@@ -45,7 +45,6 @@ function ProtectedRoute({ children, requiredRole }) {
       const { data: { session } } = await supabase.auth.getSession()
 
       if (!session) {
-        if (preserveUbAdminDuringFocal) return
         if (mounted) {
           setAuthorized(false)
           setLoading(false)
@@ -118,6 +117,9 @@ function ProtectedRoute({ children, requiredRole }) {
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         checkAuth()
       } else if (event === 'SIGNED_OUT') {
+        if (typeof sessionStorage !== 'undefined') {
+          sessionStorage.removeItem(UB_ADMIN_FOCAL_CREATE_FLAG)
+        }
         if (mounted) {
           setAuthorized(false)
           setLoading(false)

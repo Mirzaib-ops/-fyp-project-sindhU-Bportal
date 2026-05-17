@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
+import { signOutAndRedirect } from '../lib/logout'
 import { LogOut } from 'lucide-react'
 
 function Navbar() {
@@ -42,10 +43,8 @@ function Navbar() {
     navigate('/login')
   }
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    // Refresh the page to clear any cached state
-    window.location.href = '/'
+  const handleLogout = () => {
+    signOutAndRedirect('/')
   }
 
   const handleGoToDashboard = () => {

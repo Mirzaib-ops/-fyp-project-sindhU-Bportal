@@ -1,15 +1,14 @@
 import { motion } from 'framer-motion'
 import { useNavigate, useLocation, Outlet } from 'react-router-dom'
-import { supabase } from '../lib/supabaseClient'
+import { signOutAndRedirect } from '../lib/logout'
 import { LayoutDashboard, University, LogOut, Users, BarChart3, Search, UserCheck, MapPin } from 'lucide-react'
 
 function AdminLayout() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    navigate('/login')
+  const handleLogout = () => {
+    signOutAndRedirect('/login')
   }
 
   return (
@@ -125,6 +124,7 @@ function AdminLayout() {
         {/* Logout */}
         <div className="px-4 pb-6">
           <button
+            type="button"
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-slate-400 hover:bg-white/5 hover:text-white transition-all text-sm"
           >

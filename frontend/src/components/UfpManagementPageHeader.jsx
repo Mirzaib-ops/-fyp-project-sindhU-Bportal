@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, Plus } from 'lucide-react'
+import { ArrowLeft, LogOut, Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { signOutAndRedirect } from '../lib/logout'
 import Breadcrumbs from './Breadcrumbs'
 
 /** Outer shell for UFP admin hero blocks — keep in sync with detail-page headers that import these tokens. */
@@ -29,6 +30,7 @@ const PRIMARY_ACTION_CLASS =
  * @param {{ label: string, onClick: () => void, icon?: import('react').ReactNode }} [primaryAction]
  * @param {string} [className] — merged onto the outer motion wrapper (after default mb-6)
  * @param {string} [breadcrumbClassName]
+ * @param {boolean} [showLogout] — show Log out control (UFP sub-pages without sidebar)
  */
 export function UfpManagementPageHeader({
   breadcrumbItems,
@@ -36,6 +38,7 @@ export function UfpManagementPageHeader({
   description,
   icon = null,
   primaryAction = null,
+  showLogout = true,
   className = '',
   breadcrumbClassName = 'mb-4 text-sm',
 }) {
@@ -84,12 +87,24 @@ export function UfpManagementPageHeader({
             </div>
           )}
         </div>
-        {primaryAction ? (
-          <button type="button" onClick={primaryAction.onClick} className={PRIMARY_ACTION_CLASS}>
-            {primaryAction.icon != null ? primaryAction.icon : <Plus className="h-4 w-4" aria-hidden />}
-            <span>{primaryAction.label}</span>
-          </button>
-        ) : null}
+        <motion.div className="flex shrink-0 flex-wrap items-center gap-2">
+          {showLogout ? (
+            <button
+              type="button"
+              onClick={() => signOutAndRedirect('/login')}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-slate-950/90 px-4 py-2.5 text-sm font-semibold text-slate-200 shadow-md transition-all hover:border-red-400/40 hover:bg-slate-900 hover:text-white"
+            >
+              <LogOut className="h-4 w-4" aria-hidden />
+              <span>Log out</span>
+            </button>
+          ) : null}
+          {primaryAction ? (
+            <button type="button" onClick={primaryAction.onClick} className={PRIMARY_ACTION_CLASS}>
+              {primaryAction.icon != null ? primaryAction.icon : <Plus className="h-4 w-4" aria-hidden />}
+              <span>{primaryAction.label}</span>
+            </button>
+          ) : null}
+        </motion.div>
       </div>
     </motion.div>
   )

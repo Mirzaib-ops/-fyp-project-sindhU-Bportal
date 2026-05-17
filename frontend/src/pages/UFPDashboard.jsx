@@ -4,6 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
 import { supabase } from '../lib/supabaseClient'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { recordSystemLog } from '../utils/systemLogs'
+import { signOutAndRedirect } from '../lib/logout'
 import { calculateInstitutionalHealth } from '../utils/governanceInsights'
 import { UFP_PAGE_GRADIENT_CLASS } from '../components/UfpAdminShell'
 import { 
@@ -379,9 +380,8 @@ function UFPDashboard() {
     setShowCampusesDropdown(!showCampusesDropdown)
   }
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    navigate('/login')
+  const handleLogout = () => {
+    signOutAndRedirect('/login')
   }
 
   const handleLogoUpload = async (e) => {

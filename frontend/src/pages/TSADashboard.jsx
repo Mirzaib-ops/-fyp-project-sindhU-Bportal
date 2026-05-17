@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { signOutAndRedirect } from '../lib/logout'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Users,
@@ -146,9 +147,8 @@ function TSADashboard() {
     }
   }, [appendRecentActivity, lockingUserId, showToast])
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    navigate('/login')
+  const handleLogout = () => {
+    signOutAndRedirect('/login')
   }
 
   const navItems = [
